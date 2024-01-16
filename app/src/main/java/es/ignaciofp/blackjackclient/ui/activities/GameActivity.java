@@ -1,8 +1,10 @@
-package es.ignaciofp.blackjackclient;
+package es.ignaciofp.blackjackclient.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import es.ignaciofp.blackjackclient.R;
 
 public class GameActivity extends AppCompatActivity {
 

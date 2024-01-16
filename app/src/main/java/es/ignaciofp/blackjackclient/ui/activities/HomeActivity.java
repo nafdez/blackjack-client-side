@@ -1,4 +1,4 @@
-package es.ignaciofp.blackjackclient;
+package es.ignaciofp.blackjackclient.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import es.ignaciofp.blackjackclient.R;
 
 public class HomeActivity extends AppCompatActivity {
 

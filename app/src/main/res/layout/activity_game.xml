@@ -4,9 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameActivity"
-    android:background="@drawable/bg_drawable_poker_green"
-    >
+    android:background="#1f8c56"
+    tools:context=".ui.activities.GameActivity">
+
+
+    <Button
+        android:id="@+id/hitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/standButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/standButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stand"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/hitButton"
+        app:layout_constraintTop_toTopOf="@+id/hitButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
