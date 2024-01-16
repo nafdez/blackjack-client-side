@@ -9,25 +9,25 @@
     >
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText4"
+        android:id="@+id/editTextHost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:hint="Host"
-        app:layout_constraintBottom_toTopOf="@+id/textInputEditText5"
-        app:layout_constraintStart_toStartOf="@+id/textInputEditText5" />
+        app:layout_constraintBottom_toTopOf="@+id/editTextPort"
+        app:layout_constraintStart_toStartOf="@+id/editTextPort" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText5"
+        android:id="@+id/editTextPort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="22dp"
         android:hint="Port"
-        app:layout_constraintBottom_toTopOf="@+id/materialButton3"
-        app:layout_constraintStart_toStartOf="@+id/materialButton3" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonPlay"
+        app:layout_constraintStart_toStartOf="@+id/buttonPlay" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton3"
+        android:id="@+id/buttonPlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Play"
