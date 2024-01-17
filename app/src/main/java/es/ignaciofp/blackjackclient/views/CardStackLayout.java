@@ -31,7 +31,7 @@ public class CardStackLayout extends LinearLayout {
     }
 
     private void addCards(List<Card> cards) {
-        ImageView img = new ImageView(getContext());
+        ImageView img;
         float rotationAngle;
         int totalCards = cards.size();
 
@@ -39,7 +39,7 @@ public class CardStackLayout extends LinearLayout {
             // Set rotation based on the position in the deck
             rotationAngle = (i - (totalCards - 1) / 2.0f) * 10; // Adjust the angle as needed
             img = new ImageView(getContext());
-            img.setImageResource(cards.get(i).getCardImageDrawableId());
+            img.setImageDrawable(cards.get(i).getCardImageDrawable());
             img.setRotation(rotationAngle);
         }
     }

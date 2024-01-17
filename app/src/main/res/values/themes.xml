@@ -3,7 +3,26 @@
     <style name="Base.Theme.BlackjackClient" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:background">@color/green_poker</item>
+        <item name="android:textColor">@color/white_ghost</item>
     </style>
 
     <style name="Theme.BlackjackClient" parent="Base.Theme.BlackjackClient" />
+
+    <style name="button" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/red_blood</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="gameButton" parent="button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="pokerText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/pokerfont</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
 </resources>

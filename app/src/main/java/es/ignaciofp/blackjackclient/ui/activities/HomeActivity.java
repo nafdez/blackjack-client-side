@@ -45,21 +45,22 @@ public class HomeActivity extends AppCompatActivity {
      * @return true if host and port are valid
      */
     private boolean checkHostAndPort(String host, String portStr) {
-        if (host.isEmpty() || portStr.isEmpty()) {
-            // Showing toast instead of alert to no scare the users
-            Toast.makeText(this, "Host and port must not be empty", Toast.LENGTH_SHORT).show();
-            return false; // Early return if host or port are empty
-        }
-
-        try {
-            Integer.parseInt(portStr); // We're not using the value so not storing it
-        } catch (NumberFormatException e) { // If cannot parse to int, is an invalid port number
-            showSimpleAlert("Invalid port", "Please, enter a valid port, example: 9999.");
-            return false;
-        }
-
-        // TODO: Check if port is between the range of valid ports and if host is a valid host
-        return false;
+        return true;
+//        if (host.isEmpty() || portStr.isEmpty()) {
+//            // Showing toast instead of alert to no scare the users
+//            Toast.makeText(this, "Host and port must not be empty", Toast.LENGTH_SHORT).show();
+//            return true; // Early return if host or port are empty
+//        }
+//
+//        try {
+//            Integer.parseInt(portStr); // We're not using the value so not storing it
+//        } catch (NumberFormatException e) { // If cannot parse to int, is an invalid port number
+//            showSimpleAlert("Invalid port", "Please, enter a valid port, example: 9999.");
+//            return false;
+//        }
+//
+//        // TODO: Check if port is between the range of valid ports and if host is a valid host
+//        return false;
     }
 
     /**

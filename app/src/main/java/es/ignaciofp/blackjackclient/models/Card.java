@@ -1,12 +1,15 @@
 package es.ignaciofp.blackjackclient.models;
 
+import android.graphics.drawable.Drawable;
+
 public class Card {
 
     private String id;
-    private int cardImageDrawableId;
+    private Drawable cardImageDrawable;
 
-    public Card(String id) {
+    public Card(String id, Drawable cardImageDrawable) {
         this.id = id;
+        this.cardImageDrawable = cardImageDrawable;
         // TODO: Link id with image
     }
 
@@ -18,11 +21,11 @@ public class Card {
         this.id = id;
     }
 
-    public int getCardImageDrawableId() {
-        return cardImageDrawableId;
+    public Drawable getCardImageDrawable() {
+        return cardImageDrawable;
     }
 
-    public void setCardImageDrawableId(int cardImageDrawableId) {
-        this.cardImageDrawableId = cardImageDrawableId;
+    public void setCardImageDrawable(Drawable cardImageDrawable) {
+        this.cardImageDrawable = cardImageDrawable;
     }
 }
