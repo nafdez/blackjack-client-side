@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import es.ignaciofp.blackjackclient.R;
 import es.ignaciofp.blackjackclient.adapters.AdapterCard;
@@ -42,12 +44,11 @@ public class GameActivity extends AppCompatActivity {
         initRecyclerView(crupierRecyclerView, cardListCrupier);
         initRecyclerView(playerRecyclerView, cardListPlayer);
 
-//        ConnectionHandle con = ConnectionHandle.getInstance();
-//        try {
-//            con.sendCommand(ActionsEnum.START_GAME);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        ConnectionHandle con = ConnectionHandle.getInstance();
+        con.sendCommand(ActionsEnum.START_GAME, () -> {
+            runOnUiThread(() -> ((Button) findViewById(R.id.hitButton)).setText("Pene"));
+            return null;
+        });
     }
 
     private void initRecyclerView(RecyclerView rv, List<Card> models) {

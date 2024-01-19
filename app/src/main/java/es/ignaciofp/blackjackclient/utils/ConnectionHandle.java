@@ -9,10 +9,8 @@ import java.net.Socket;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import es.ignaciofp.blackjackclient.callbacks.OnConnectionCompleteCallback;
-import kotlinx.coroutines.scheduling.Task;
 
 public class ConnectionHandle {
 
@@ -48,24 +46,29 @@ public class ConnectionHandle {
         });
     }
 
-    public String sendCommand(ActionsEnum action) throws IOException {
-        if (socket == null || !socket.isConnected()) return null;
-        String response;
-        try (DataInputStream input = new DataInputStream(socket.getInputStream()); DataOutputStream output = new DataOutputStream(socket.getOutputStream())) {
-            output.writeUTF(MessageProcessor.encodeMessage(action.getACTIONCMD()));
-            response = MessageProcessor.decodeMessage(input.readUTF());
-            Log.d("POKEER", String.format("%s: %s", action.getACTIONCMD(), response));
-        }
-        return response;
-    }
+    public void sendCommand(ActionsEnum action, Callable<Void> onCallbackAction) {
+        if (socket == null || !socket.isConnected()) return;
 
-    private boolean testConnection() {
-        ActionsEnum response = null;
-        try {
-            response = ActionsEnum.fromString(sendCommand(ActionsEnum.TEST));
-        } catch (IOException ignored) {
-        }
-        return response != null && response.equals(ActionsEnum.TEST);
+        Thread t = new Thread(() -> {
+            try {
+                String response;
+                DataInputStream input = null;
+                input = new DataInputStream(socket.getInputStream());
+                DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+                output.writeUTF(MessageProcessor.encodeMessage(action.getACTIONCMD()));
+                response = MessageProcessor.decodeMessage(input.readUTF());
+                Log.d("POKEER", String.format("%s: %s", action.getACTIONCMD(), response));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        t.start();
+        CACHED_POOL.submit(() -> {
+            while (t.isAlive()) ;
+            try {
+                onCallbackAction.call();
+            } catch (Exception ignored) {
+            }
+        });
     }
-
 }

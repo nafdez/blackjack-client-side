@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.concurrent.Callable;
 
 import es.ignaciofp.blackjackclient.ui.activities.GameActivity;
+import es.ignaciofp.blackjackclient.utils.ConnectionHandle;
 
 public class OnConnectionCompleteCallback implements Callable<Void> {
 
