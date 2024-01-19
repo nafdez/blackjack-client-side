@@ -10,7 +10,11 @@ import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.IOException;
+
 import es.ignaciofp.blackjackclient.R;
+import es.ignaciofp.blackjackclient.callbacks.OnConnectionCompleteCallback;
+import es.ignaciofp.blackjackclient.utils.ConnectionHandle;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -27,13 +31,16 @@ public class HomeActivity extends AppCompatActivity {
             String host = hostEditText.getText().toString().trim();
             String port = portEditText.getText().toString().trim();
 
-            if (!checkHostAndPort(host, port)) return; // Checking if host and port are both valid
+            host = "192.168.1.139";
+            port = "9999";
 
-            // Starting GameActivity and sending the host and port
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("host", host);
-            intent.putExtra("port", port);
-            startActivity(intent);
+            try {
+                if (checkHostAndPort(host, port)) // Checking if host and port are both valid
+                    ConnectionHandle.getInstance().connect(host, Integer.parseInt(port), new OnConnectionCompleteCallback(this));
+            } catch (IOException e) {
+                showSimpleAlert("Connection failed", "Something went wrong");
+            }
+
         });
     }
 
@@ -45,22 +52,22 @@ public class HomeActivity extends AppCompatActivity {
      * @return true if host and port are valid
      */
     private boolean checkHostAndPort(String host, String portStr) {
+        if (host.isEmpty() || portStr.isEmpty()) {
+            // Showing toast instead of alert to no scare the users
+            Toast.makeText(this, "Host and port must not be empty", Toast.LENGTH_SHORT).show();
+            return false; // Early return if host or port are empty
+        }
+
+        int port = 0;
+        try {
+            port = Integer.parseInt(portStr); // We're not using the value so not storing it
+        } catch (NumberFormatException e) { // If cannot parse to int, is an invalid port number
+            showSimpleAlert("Invalid port", "Please, enter a valid port, example: 9999.");
+            return false;
+        }
+
+        // TODO: Check if port is between the range of valid ports and if host is a valid host
         return true;
-//        if (host.isEmpty() || portStr.isEmpty()) {
-//            // Showing toast instead of alert to no scare the users
-//            Toast.makeText(this, "Host and port must not be empty", Toast.LENGTH_SHORT).show();
-//            return true; // Early return if host or port are empty
-//        }
-//
-//        try {
-//            Integer.parseInt(portStr); // We're not using the value so not storing it
-//        } catch (NumberFormatException e) { // If cannot parse to int, is an invalid port number
-//            showSimpleAlert("Invalid port", "Please, enter a valid port, example: 9999.");
-//            return false;
-//        }
-//
-//        // TODO: Check if port is between the range of valid ports and if host is a valid host
-//        return false;
     }
 
     /**
@@ -74,4 +81,5 @@ public class HomeActivity extends AppCompatActivity {
         builder.setTitle(title).setMessage(message).setPositiveButton("OK", (dialog, which) -> {
         }).show();
     }
+
 }

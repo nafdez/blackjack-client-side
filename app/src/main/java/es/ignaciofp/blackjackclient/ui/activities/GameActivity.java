@@ -7,12 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import es.ignaciofp.blackjackclient.R;
 import es.ignaciofp.blackjackclient.adapters.AdapterCard;
 import es.ignaciofp.blackjackclient.models.Card;
+import es.ignaciofp.blackjackclient.utils.ActionsEnum;
+import es.ignaciofp.blackjackclient.utils.ConnectionHandle;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -38,6 +41,13 @@ public class GameActivity extends AppCompatActivity {
 
         initRecyclerView(crupierRecyclerView, cardListCrupier);
         initRecyclerView(playerRecyclerView, cardListPlayer);
+
+//        ConnectionHandle con = ConnectionHandle.getInstance();
+//        try {
+//            con.sendCommand(ActionsEnum.START_GAME);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     private void initRecyclerView(RecyclerView rv, List<Card> models) {
@@ -51,5 +61,9 @@ public class GameActivity extends AppCompatActivity {
 
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(new AdapterCard(models));
+    }
+
+    private void parseResponse() {
+
     }
 }
