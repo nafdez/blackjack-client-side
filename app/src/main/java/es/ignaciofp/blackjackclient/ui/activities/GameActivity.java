@@ -61,14 +61,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         resetButton.setOnClickListener(this);
 
         List<Card> cardListCrupier = new ArrayList<>();
-        cardListCrupier.add(new Card("1", AppCompatResources.getDrawable(this, R.drawable.ace_of_clubs)));
-        cardListCrupier.add(new Card("1", AppCompatResources.getDrawable(this, R.drawable.card_back)));
-        cardListCrupier.add(new Card("1", AppCompatResources.getDrawable(this, R.drawable.card_back)));
+        cardListCrupier.add(new Card(this, "K♦"));
+        cardListCrupier.add(new Card(this, "**"));
 
         List<Card> cardListPlayer = new ArrayList<>();
-        cardListPlayer.add(new Card("1", AppCompatResources.getDrawable(this, R.drawable.ace_of_clubs)));
-        cardListPlayer.add(new Card("1", AppCompatResources.getDrawable(this, R.drawable.ace_of_spades)));
-        cardListPlayer.add(new Card("1", AppCompatResources.getDrawable(this, R.drawable.ace_of_hearts)));
+        cardListPlayer.add(new Card(this, "10♠"));
+        cardListPlayer.add(new Card(this, "A♣"));
 
         initRecyclerView(crupierRecyclerView, cardListCrupier);
         initRecyclerView(playerRecyclerView, cardListPlayer);
@@ -129,11 +127,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             onGameEnded(bjResult[2]);
             Log.d(GameActivity.class.getName(), "onGameEnded " + bjResult[2]);
         }
-
-
-        // TODO: set data
-
-//        runOnUiThread(() -> playerScoreTextView.setText(response));
     }
 
     private String calculateScore(String input) {

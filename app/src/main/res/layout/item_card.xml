@@ -8,7 +8,7 @@
         android:id="@+id/itemCardImageView"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/ace_of_clubs"
+        android:src="@drawable/clubs_ace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
