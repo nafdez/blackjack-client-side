@@ -2,17 +2,14 @@ package es.ignaciofp.blackjackclient.models;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 
 public class Card {
 
     private final Context CONTEXT;
-    private String id;
-    private int cardImageDrawableId;
+    private final int cardImageDrawableId;
 
     public Card(Context context, String id) {
         this.CONTEXT = context;
-        this.id = id;
         this.cardImageDrawableId = parseIdToDrawableId(id);
     }
 
@@ -62,19 +59,8 @@ public class Card {
         return value.toString();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public int getCardImageDrawableId() {
         return cardImageDrawableId;
     }
 
-    public void setCardImageDrawableId(int cardImageDrawableId) {
-        this.cardImageDrawableId = cardImageDrawableId;
-    }
 }

@@ -1,16 +1,13 @@
 package es.ignaciofp.blackjackclient.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import es.ignaciofp.blackjackclient.R;
 import es.ignaciofp.blackjackclient.callbacks.OnConnectionCompleteCallback;
@@ -30,9 +27,6 @@ public class HomeActivity extends AppCompatActivity {
         playButton.setOnClickListener((v) -> {
             String host = hostEditText.getText().toString().trim();
             String port = portEditText.getText().toString().trim();
-
-            host = "192.168.1.139";
-            port = "9999";
 
             if (checkHostAndPort(host, port)) // Checking if host and port are both valid
                 ConnectionHandle.getInstance().connect(host, Integer.parseInt(port), new OnConnectionCompleteCallback(this));
@@ -58,24 +52,13 @@ public class HomeActivity extends AppCompatActivity {
         try {
             port = Integer.parseInt(portStr); // We're not using the value so not storing it
         } catch (NumberFormatException e) { // If cannot parse to int, is an invalid port number
-            showSimpleAlert("Invalid port", "Please, enter a valid port, example: 9999.");
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+            builder.setTitle("Invalid port").setMessage("Please, enter a valid port, example: 9999.").setPositiveButton("OK", (dialog, which) -> {
+            }).show();
             return false;
         }
 
         // TODO: Check if port is between the range of valid ports and if host is a valid host
         return true;
     }
-
-    /**
-     * Displays an Alert Dialog
-     *
-     * @param title   the title to show in the alert
-     * @param message the message to show in the alert
-     */
-    private void showSimpleAlert(String title, String message) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(title).setMessage(message).setPositiveButton("OK", (dialog, which) -> {
-        }).show();
-    }
-
 }

@@ -15,7 +15,7 @@ import es.ignaciofp.blackjackclient.models.Card;
 
 public class AdapterCard extends RecyclerView.Adapter<AdapterCard.CardViewHolder> {
 
-    final List<Card> models;
+    List<Card> models;
 
     public AdapterCard(List<Card> models) {
         this.models = models;
@@ -38,17 +38,22 @@ public class AdapterCard extends RecyclerView.Adapter<AdapterCard.CardViewHolder
         return models.size();
     }
 
+    public void swapModels(@NonNull List<Card> models) {
+        this.models = models;
+        notifyDataSetChanged();
+    }
+
     public static class CardViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
+        final ImageView IMAGE_VIEW;
 
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.itemCardImageView);
+            IMAGE_VIEW = itemView.findViewById(R.id.itemCardImageView);
         }
 
         public void bind(@NonNull Card card) {
-            imageView.setImageResource(card.getCardImageDrawableId());
+            IMAGE_VIEW.setImageResource(card.getCardImageDrawableId());
         }
     }
 }

@@ -1,7 +1,7 @@
 package es.ignaciofp.blackjackclient.utils;
 
 public enum ActionsEnum {
-    START_GAME("N"), HIT("H"), STAND("S"), STOP_GAME("F"), TEST("TEST");
+    START_GAME("N"), HIT("H"), STAND("S"), STOP_GAME("F");
 
     private final String ACTIONCMD;
 
@@ -13,10 +13,4 @@ public enum ActionsEnum {
         return ACTIONCMD;
     }
 
-    public static ActionsEnum fromString(String actionCmd) {
-        for (ActionsEnum a : ActionsEnum.values()) {
-            if (actionCmd.equals(a.getACTIONCMD())) return a;
-        }
-        return null;
-    }
 }

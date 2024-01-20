@@ -1,7 +1,5 @@
 package es.ignaciofp.blackjackclient.utils;
 
-import android.util.Log;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -69,7 +67,6 @@ public class ConnectionHandle {
                 DataOutputStream output = new DataOutputStream(socket.getOutputStream());
                 output.writeUTF(MessageProcessor.encodeMessage(action.getACTIONCMD()));
                 response[0] = MessageProcessor.decodeMessage(input.readUTF());
-                Log.d("POKEER", String.format("%s: %s", action.getACTIONCMD(), response[0]));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

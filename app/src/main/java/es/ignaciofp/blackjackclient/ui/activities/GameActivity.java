@@ -1,22 +1,19 @@
 package es.ignaciofp.blackjackclient.ui.activities;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import es.ignaciofp.blackjackclient.R;
 import es.ignaciofp.blackjackclient.adapters.AdapterCard;
@@ -37,6 +34,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button hitButton;
     private Button standButton;
     private Button resetButton;
+
+    private List<Card> cardListCrupier;
+    private List<Card> cardListPlayer;
 
     private OnGameResponseCallback onResponseCallback;
 
@@ -60,18 +60,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         standButton.setOnClickListener(this);
         resetButton.setOnClickListener(this);
 
-        List<Card> cardListCrupier = new ArrayList<>();
+        cardListCrupier = new ArrayList<>();
         cardListCrupier.add(new Card(this, "K♦"));
         cardListCrupier.add(new Card(this, "**"));
 
-        List<Card> cardListPlayer = new ArrayList<>();
+        cardListPlayer = new ArrayList<>();
         cardListPlayer.add(new Card(this, "10♠"));
         cardListPlayer.add(new Card(this, "A♣"));
 
         initRecyclerView(crupierRecyclerView, cardListCrupier);
         initRecyclerView(playerRecyclerView, cardListPlayer);
 
-        onResponseCallback = new OnGameResponseCallback(this) {
+        onResponseCallback = new OnGameResponseCallback() {
             @Override
             public Void call() {
                 parseResponse(this.getResponse());
@@ -125,8 +125,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 crupierScoreTextView.setVisibility(View.VISIBLE);
             });
             onGameEnded(bjResult[2]);
-            Log.d(GameActivity.class.getName(), "onGameEnded " + bjResult[2]);
         }
+
+        // Card assignment
+        String crupierCardsRaw = bjResult[0].replaceAll("Crupier: ", "").split(":")[0];
+        String playerCardsRaw = bjResult[1].replaceAll("Jugador: ", "").split(":")[0];
+
+        cardListCrupier = cardsAsList(crupierCardsRaw);
+        cardListPlayer = cardsAsList(playerCardsRaw);
+        runOnUiThread(() -> {
+            ((AdapterCard) Objects.requireNonNull(crupierRecyclerView.getAdapter())).swapModels(cardListCrupier);
+            ((AdapterCard) Objects.requireNonNull(playerRecyclerView.getAdapter())).swapModels(cardListPlayer);
+        });
+    }
+
+    private List<Card> cardsAsList(String cards) {
+        List<Card> cardList = new ArrayList<>();
+        Pattern p = Pattern.compile("([0-9]+.)|(\\w.)|(\\*\\*)");
+        Matcher m = p.matcher(cards);
+        while (m.find()) cardList.add(new Card(this, m.group(0)));
+        return cardList;
     }
 
     private String calculateScore(String input) {
