@@ -7,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,6 +18,8 @@ public class ConnectionHandle {
     private static ConnectionHandle instance;
     private final ExecutorService CACHED_POOL = Executors.newCachedThreadPool();
     private Socket socket;
+    private String host;
+    private int port;
 
     private ConnectionHandle() {
     }
@@ -30,7 +31,9 @@ public class ConnectionHandle {
         return instance;
     }
 
-    public void connect(String host, int port, OnConnectionCompleteCallback onCompleteCallback) throws IOException {
+    public void connect(String host, int port, OnConnectionCompleteCallback onCompleteCallback) {
+        this.host = host;
+        this.port = port;
         Thread t = new Thread(() -> {
             try {
                 this.socket = new Socket(host, port);
@@ -48,6 +51,10 @@ public class ConnectionHandle {
             onCompleteCallback.setSocket(socket);
             onCompleteCallback.call();
         });
+    }
+
+    public void reconnect(OnConnectionCompleteCallback callback) {
+        this.connect(host, port, callback);
     }
 
     public synchronized void sendCommand(ActionsEnum action, OnGameResponseCallback onCallbackAction) {

@@ -34,12 +34,8 @@ public class HomeActivity extends AppCompatActivity {
             host = "192.168.1.139";
             port = "9999";
 
-            try {
-                if (checkHostAndPort(host, port)) // Checking if host and port are both valid
-                    ConnectionHandle.getInstance().connect(host, Integer.parseInt(port), new OnConnectionCompleteCallback(this));
-            } catch (IOException e) {
-                showSimpleAlert("Connection failed", "Something went wrong");
-            }
+            if (checkHostAndPort(host, port)) // Checking if host and port are both valid
+                ConnectionHandle.getInstance().connect(host, Integer.parseInt(port), new OnConnectionCompleteCallback(this));
 
         });
     }

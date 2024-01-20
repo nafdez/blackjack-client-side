@@ -25,6 +25,10 @@ public class OnConnectionCompleteCallback implements Callable<Void> {
         this.clientSocket = socket;
     }
 
+    public Socket getSocket() {
+        return clientSocket;
+    }
+
     @Override
     public Void call() {
         if (clientSocket.isConnected()) {

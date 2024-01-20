@@ -17,6 +17,17 @@
         app:layout_constraintVertical_bias="0.15" />
 
     <TextView
+        android:id="@+id/crupierScoreTextView"
+        style="@style/pokerText"
+        android:text="17"
+        android:textSize="72sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/winnerTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crupierRecyclerView" />
+
+    <TextView
         android:id="@+id/winnerTextView"
         style="@style/pokerText"
         android:layout_width="wrap_content"
