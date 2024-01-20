@@ -6,30 +6,50 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import es.ignaciofp.blackjackclient.R;
 import es.ignaciofp.blackjackclient.adapters.AdapterCard;
+import es.ignaciofp.blackjackclient.callbacks.OnGameResponseCallback;
 import es.ignaciofp.blackjackclient.models.Card;
 import es.ignaciofp.blackjackclient.utils.ActionsEnum;
 import es.ignaciofp.blackjackclient.utils.ConnectionHandle;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    RecyclerView crupierRecyclerView;
-    RecyclerView playerRecyclerView;
+    private ConnectionHandle connectionHandle;
+    private RecyclerView crupierRecyclerView;
+    private RecyclerView playerRecyclerView;
+    private TextView playerScoreTextView;
+    private TextView winnerTextView;
+    private Button hitButton;
+    private Button standButton;
+    private Button resetButton;
+
+    private OnGameResponseCallback onResponseCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        connectionHandle = ConnectionHandle.getInstance();
+
         crupierRecyclerView = findViewById(R.id.crupierRecyclerView);
         playerRecyclerView = findViewById(R.id.playerRecyclerView);
+        playerScoreTextView = findViewById(R.id.playerScoreTextView);
+        winnerTextView = findViewById(R.id.winnerTextView);
+        hitButton = findViewById(R.id.hitButton);
+        standButton = findViewById(R.id.standButton);
+        resetButton = findViewById(R.id.resetButton);
+
+        hitButton.setOnClickListener(this);
+        standButton.setOnClickListener(this);
 
         List<Card> cardListCrupier = new ArrayList<>();
         cardListCrupier.add(new Card("1", AppCompatResources.getDrawable(this, R.drawable.ace_of_clubs)));
@@ -44,11 +64,31 @@ public class GameActivity extends AppCompatActivity {
         initRecyclerView(crupierRecyclerView, cardListCrupier);
         initRecyclerView(playerRecyclerView, cardListPlayer);
 
-        ConnectionHandle con = ConnectionHandle.getInstance();
-        con.sendCommand(ActionsEnum.START_GAME, () -> {
-            runOnUiThread(() -> ((Button) findViewById(R.id.hitButton)).setText("Pene"));
-            return null;
-        });
+        onResponseCallback = new OnGameResponseCallback(this) {
+            @Override
+            public Void call() {
+                parseResponse(this.getResponse());
+                return super.call();
+            }
+        };
+
+        startGame();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finishGame();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == hitButton.getId())
+            connectionHandle.sendCommand(ActionsEnum.HIT, onResponseCallback);
+        else if (v.getId() == standButton.getId())
+            connectionHandle.sendCommand(ActionsEnum.STAND, onResponseCallback);
+        else if (v.getId() == resetButton.getId()) recreate();
+
     }
 
     private void initRecyclerView(RecyclerView rv, List<Card> models) {
@@ -64,7 +104,42 @@ public class GameActivity extends AppCompatActivity {
         rv.setAdapter(new AdapterCard(models));
     }
 
-    private void parseResponse() {
+    private void parseResponse(String response) {
+        String[] bjResult = response.split("\n");
 
+        if (bjResult.length == 3) {
+            onGameEnded(bjResult[3]);
+        }
+
+        // TODO: set data
+
+//        runOnUiThread(() -> playerScoreTextView.setText(response));
+    }
+
+    private void onGameEnded(String winnerText) {
+        runOnUiThread(() -> {
+            winnerTextView.setText(winnerText);
+            toggleButtonFunction(hitButton);
+            toggleButtonFunction(standButton);
+            toggleButtonFunction(resetButton);
+        });
+    }
+
+    private void toggleButtonFunction(Button button) {
+        if (button.getVisibility() == View.VISIBLE) {
+            button.setVisibility(View.INVISIBLE);
+            button.setEnabled(false);
+        } else {
+            button.setVisibility(View.INVISIBLE);
+            button.setEnabled(true);
+        }
+    }
+
+    private void startGame() {
+        connectionHandle.sendCommand(ActionsEnum.START_GAME, onResponseCallback);
+    }
+
+    private void finishGame() {
+        connectionHandle.sendCommand(ActionsEnum.STOP_GAME, null);
     }
 }

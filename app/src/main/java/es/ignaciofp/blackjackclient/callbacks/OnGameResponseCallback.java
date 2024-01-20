@@ -13,18 +13,21 @@ public class OnGameResponseCallback implements Callable<Void> {
     private final Context CONTEXT;
     private String response = "";
 
-    OnGameResponseCallback(Context context) {
+    public OnGameResponseCallback(Context context) {
         this.CONTEXT = context;
     }
 
     @Override
     public Void call() {
-
         return null;
     }
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public String getResponse() {
+        return response;
     }
 
     private void parseInputIntoInfo(String input) {

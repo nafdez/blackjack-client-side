@@ -43,9 +43,11 @@ public class OnConnectionCompleteCallback implements Callable<Void> {
      * @param title   the title to show in the alert
      * @param message the message to show in the alert
      */
-    private void showSimpleAlert(String title, String message) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(CONTEXT);
-        builder.setTitle(title).setMessage(message).setPositiveButton("OK", (dialog, which) -> {
-        }).show();
+    public void showSimpleAlert(String title, String message) {
+        ((Activity) CONTEXT).runOnUiThread(() -> {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(CONTEXT);
+            builder.setTitle(title).setMessage(message).setPositiveButton("OK", (dialog, which) -> {
+            }).show();
+        });
     }
 }
