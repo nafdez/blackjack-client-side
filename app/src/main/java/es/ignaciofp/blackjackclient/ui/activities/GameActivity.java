@@ -61,12 +61,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         resetButton.setOnClickListener(this);
 
         cardListCrupier = new ArrayList<>();
-        cardListCrupier.add(new Card(this, "K♦"));
-        cardListCrupier.add(new Card(this, "**"));
 
         cardListPlayer = new ArrayList<>();
-        cardListPlayer.add(new Card(this, "10♠"));
-        cardListPlayer.add(new Card(this, "A♣"));
 
         initRecyclerView(crupierRecyclerView, cardListCrupier);
         initRecyclerView(playerRecyclerView, cardListPlayer);
